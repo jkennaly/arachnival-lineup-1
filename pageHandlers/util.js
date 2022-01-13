@@ -86,7 +86,7 @@ const queueForExtract = async (url, lineupUrl) => {
 	  var s3 = new AWS.S3({ region: awsRegion });
       var params = {
         Bucket: 'arachnival',
-        Key: `lineupUrls/${lineupUrl.replace(/\//g, '-')}.${ext}`,
+        Key: `lineupUrls/${encodeURIComponent(lineupUrl)}.${ext}`,
         Body: body,
         ContentType: contentType
       };
