@@ -7,18 +7,23 @@ const util = require('./pageHandlers/util')
 exports.handler = async (event, context, callback) => {
     let lineupUrl = "https://bigearsfestival.org/2022-festival/"
     let responseCode = 200;
+    let evalOnly = false;
     //console.log("request: " + JSON.stringify(event));
 
     if(event.Records && event.Records[0] && event.Records[0].Sns && event.Records[0].Sns.Message) {
     	try {
     		const parsedMessage = JSON.parse(event.Records[0].Sns.Message)
     		lineupUrl = parsedMessage.lineupUrl
+    		evalOnly = Boolean(parsedMessage,evalOnly)
     	} catch (err) {
     		console.error('Sns Message parse error')
     		console.error(err)
     	}
     } else if (event.queryStringParameters && event.queryStringParameters.lineupUrl) {
         lineupUrl = event.queryStringParameters.lineupUrl;
+    }
+    if (event.queryStringParameters && event.queryStringParameters.evalOnly) {
+        evalOnly = Boolean(event.queryStringParameters.evalOnly);
     }
   const leKey = 'arach-lineup.' + lineupUrl
   let result = null;
@@ -42,6 +47,10 @@ exports.handler = async (event, context, callback) => {
     await page.goto(lineupUrl);
 
     const evalType = await util.evalSelect(page)
+    if(evalOnly) {
+    	console.log('EvalOnly Mode result', evalType)
+    	return callback(null, evalType)
+    }
     switch(evalType) {
     	case 'coachella':
     		result = await coachella(page);
