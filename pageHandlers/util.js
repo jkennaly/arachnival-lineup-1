@@ -51,9 +51,9 @@ const evalSelect = async (page, evalOnly) => {
 	const imgSize = !hiCount && largestImg[2]
 	const viewport = !hiCount && page.viewport()
 	const viewportSize = !hiCount && viewport.width * viewport.height
-	const useImage = !hiCount && (imgSize > 0.5 * viewportSize)
+	const useImage = !hiCount && (imgSize > 0.3 * viewportSize)
 	if(evalOnly) console.log('hiCount, useImage', hiCount, useImage)
-	if(evalOnly) console.log('largestImage:', largestImg, useImage, imgSize - 0.5 * viewportSize)
+	if(evalOnly) console.log('largestImage:', largestImg, useImage, imgSize - 0.3 * viewportSize)
 	if(evalOnly) console.log('viewport:', viewportSize)
 	//lineup image only
 	if(useImage) return 'image'
