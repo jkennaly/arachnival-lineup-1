@@ -14,7 +14,7 @@ exports.handler = async (event, context, callback) => {
     	try {
     		const parsedMessage = JSON.parse(event.Records[0].Sns.Message)
     		lineupUrl = parsedMessage.lineupUrl
-    		evalOnly = Boolean(parsedMessage,evalOnly)
+    		evalOnly = Boolean(parsedMessage.evalOnly)
     	} catch (err) {
     		console.error('Sns Message parse error')
     		console.error(err)
@@ -23,7 +23,7 @@ exports.handler = async (event, context, callback) => {
         lineupUrl = event.queryStringParameters.lineupUrl;
     }
     if (event.queryStringParameters && event.queryStringParameters.evalOnly) {
-        evalOnly = Boolean(event.queryStringParameters.evalOnly);
+        evalOnly = event.queryStringParameters.evalOnly === 'true'
     }
   const leKey = 'arach-lineup.' + lineupUrl
   let result = null;
