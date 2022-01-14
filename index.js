@@ -46,7 +46,7 @@ exports.handler = async (event, context, callback) => {
     //console.log('about to navigate to ' + lineupUrl)
     await page.goto(lineupUrl);
 
-    const evalType = await util.evalSelect(page)
+    const evalType = await util.evalSelect(page, evalOnly)
     if(evalOnly) {
     	console.log('EvalOnly Mode result', evalType)
     	return callback(null, evalType)
