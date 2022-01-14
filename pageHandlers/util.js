@@ -30,7 +30,7 @@ const largestImage = async (page) => await page.evaluate(() => {
 		.filter(i => i.src.indexOf('gradient') < 0)
 		.filter(i => i.src.indexOf('footer') < 0)
 	const img = images.sort((a, b) => b.width * b.height - a.width * a.height)[0];
-	return [images.length, img.src, img.width * img.height]
+	return [images.length, img.src, img.width * img.height, lineupImages.length]
 });
 
 const classedObjects = async page => await page.evaluate(() => {
@@ -39,18 +39,18 @@ const classedObjects = async page => await page.evaluate(() => {
         .length      
 })
 
-const evalSelect = async (page) => {
+const evalSelect = async (page, evalOnly) => {
 	const classyCount = await classedObjects(page)
 	const hiCount = classyCount > 100
-	//console.log('classyCount', classyCount)
+	if(evalOnly) console.log('classyCount', classyCount)
 	const largestImg = !hiCount && await largestImage(page)
 	const imgSize = !hiCount && largestImg[2]
 	const viewport = !hiCount && page.viewport()
 	const viewportSize = !hiCount && viewport.width * viewport.height
 	const useImage = !hiCount && (imgSize > 0.5 * viewportSize)
-	//console.log('hiCount, useImage', hiCount, useImage)
-	//console.log('largestImage:', largestImg, useImage, imgSize - 0.5 * viewportSize)
-	//console.log('viewport:', viewportSize)
+	if(evalOnly) console.log('hiCount, useImage', hiCount, useImage)
+	if(evalOnly) console.log('largestImage:', largestImg, useImage, imgSize - 0.5 * viewportSize)
+	if(evalOnly) console.log('viewport:', viewportSize)
 	//lineup image only
 	if(useImage) return 'image'
 
