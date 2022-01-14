@@ -25,7 +25,11 @@ const bottomOut = (page, lastHeight) => {
 }
 
 const largestImage = async (page) => await page.evaluate(() => {
-	const lineupImages = document.querySelectorAll('[id*=lineup i] img, [class*=lineup i] img')
+	//images whose url includes the word lineup
+	const namedLineups = document.querySelectorAll('img[src*=lineup]')
+	//images that are within an element whose id or class includes the word lineup
+	const lineupImages = namedLineups.length ? namedLineups : document.querySelectorAll('[id*=lineup i] img, [class*=lineup i] img')
+	//all images on the page
 	const images = [...(lineupImages.length ? lineupImages : document.getElementsByTagName('img'))]
 		.filter(i => i.src.indexOf('gradient') < 0)
 		.filter(i => i.src.indexOf('footer') < 0)
